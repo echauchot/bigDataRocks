@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Etienne",
+    "age": 32,
+    "childrenCount": 1
+  },
+  {
+    "name": "Amelie",
+    "age": 32,
+    "childrenCount": 1
+  },
+  {
+    "name": "Hélène",
+    "age": 30,
+    "childrenCount": 1
+  },
+  {
+    "name": "Louis",
+    "age": 3,
+    "childrenCount": 0
+  },
+  {
+    "name": "Marie",
+    "age": 60,
+    "childrenCount": 2
+  },
+  {
+    "name": "Emmanuel",
+    "age": 29,
+    "childrenCount": 0
+  },
+  {
+    "name": "Jean",
+    "age": 70,
+    "childrenCount": 3
+  },
+  {
+    "name": "Louise",
+    "age": 25,
+    "childrenCount": 0
+  },
+  {
+    "name": "Thomas",
+    "age": 20,
+    "childrenCount": 0
+  },
+  {
+    "name": "Roger",
+    "age": 80,
+    "childrenCount": 0
+  },
+  {
+    "name": "Laurent",
+    "age": 59,
+    "childrenCount": 2
+  },
+  {
+    "name": "Jacqueline",
+    "age": 80,
+    "childrenCount": 3
+  }
+]
