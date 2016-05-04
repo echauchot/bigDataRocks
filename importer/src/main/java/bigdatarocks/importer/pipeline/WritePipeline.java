@@ -1,9 +1,8 @@
-package bigdatarocks.common.pipeline;
+package bigdatarocks.importer.pipeline;
 
 import bigdatarocks.common.bean.Person;
-import bigdatarocks.common.service.ReaderService;
+import bigdatarocks.importer.service.ReaderService;
 import org.apache.spark.SparkConf;
-import org.apache.spark.SparkContext;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.storage.StorageLevel;

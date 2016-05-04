@@ -9,8 +9,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cassandra-spark</artifactId>
+    <artifactId>importer</artifactId>
     <dependencies>
+        <dependency>
+            <groupId>etienne.chauchot.bigDataRocks</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>com.datastax.spark</groupId>
             <artifactId>spark-cassandra-connector-java_2.10</artifactId>

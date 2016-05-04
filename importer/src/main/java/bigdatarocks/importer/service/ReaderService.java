@@ -1,4 +1,4 @@
-package bigdatarocks.common.service;
+package bigdatarocks.importer.service;
 
 import bigdatarocks.common.bean.Person;
 import com.fasterxml.jackson.core.type.TypeReference;
