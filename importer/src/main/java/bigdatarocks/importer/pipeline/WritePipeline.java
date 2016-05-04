@@ -18,21 +18,25 @@ public class WritePipeline {
 
     private JavaSparkContext sparkContext;
 
-    public void run(String fileName) throws IOException {
+    public void run(String fileName, boolean percistToCassandra, boolean percistToElasticSearch) throws IOException {
         configureSparkContext();
+        //TODO parametrize input
         List<Person> persons = ReaderService.readPersons("src/main/resources/common/input/persons.json");
         JavaRDD<Person> personsRdd = sparkContext.parallelize(persons);
         personsRdd.persist(StorageLevel.MEMORY_AND_DISK());
-        CassandraWriterService.percistToCassandra(personsRdd);
-        ElasticSearchWriterService.percistToElasticSearch(personsRdd);
+        if (percistToCassandra)
+            CassandraWriterService.percistToCassandra(personsRdd);
+        if (percistToElasticSearch)
+            ElasticSearchWriterService.percistToElasticSearch(personsRdd);
 
     }
-
 
     private void configureSparkContext() {
         SparkConf sparkConf = new SparkConf();
         sparkConf.setAppName("Write pipeline");
         sparkConf.set("spark.driver.allowMultipleContexts", "true");
+
+        //TODO parameters in config file
         sparkConf.setMaster("local[*]");
         sparkConf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer");
 
