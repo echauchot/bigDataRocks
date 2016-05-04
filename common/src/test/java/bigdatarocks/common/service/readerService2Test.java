@@ -8,10 +8,10 @@ import java.util.List;
 
 import static junit.framework.Assert.assertEquals;
 
-public class readerServiceTest {
+public class readerService2Test {
 @Test
   public void readPersons() throws IOException{
-    List<Person> persons = readerService.readPersons("src/main/resources/common/input/persons.json");
+    List<Person> persons = readerService2.readPersons("src/main/resources/common/input/persons.json");
     assertEquals(12, persons.size());
     assertEquals("Etienne", persons.get(0).getName());
     assertEquals(32, persons.get(0).getAge());
