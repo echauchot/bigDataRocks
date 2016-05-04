@@ -1,0 +1,39 @@
+{
+  "order": 1,
+  "template": "persons*",
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "aliases": {
+    "persons": {}
+  },
+  "mappings": {
+    "person": {
+      "_source": {
+        "enabled": true
+      },
+      "_all": {
+        "enabled": false
+      },
+      "properties": {
+        "id": {
+          "index": "not_analyzed",
+          "type": "string"
+        },
+        "name": {
+          "type": "string",
+          "index_options": "docs"
+        },
+        "age": {
+          "type": "int",
+          "index_options": "docs"
+        },
+        "childrenCount": {
+          "type": "int",
+          "index_options": "docs"
+        }
+      }
+    }
+  }
+}

@@ -22,7 +22,7 @@
         <elasticsearch-hadoop.version>2.3.0</elasticsearch-hadoop.version>
         <spark.version>1.6.0</spark.version>
         <scala.version>2.10.5</scala.version>
-        <spark-cassandra.version>1.6.0-M2</spark-cassandra.version>
+        <spark-cassandra.version>1.6.0-M1</spark-cassandra.version>
         <slf4j.version>1.6.1</slf4j.version>
         <log4j.version>1.2.15</log4j.version>
         <junit.version>4.10</junit.version>

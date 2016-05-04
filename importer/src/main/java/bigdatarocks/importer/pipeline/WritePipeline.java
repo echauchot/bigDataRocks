@@ -1,11 +1,15 @@
 package bigdatarocks.importer.pipeline;
 
 import bigdatarocks.common.bean.Person;
+import bigdatarocks.importer.service.CassandraWriterService;
+import bigdatarocks.importer.service.ElasticSearchWriterService;
 import bigdatarocks.importer.service.ReaderService;
+import com.google.common.collect.ImmutableMap;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.storage.StorageLevel;
+import org.elasticsearch.spark.rdd.api.java.JavaEsSpark;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,13 +18,16 @@ public class WritePipeline {
 
     private JavaSparkContext sparkContext;
 
-    public void run(String fileName) throws IOException{
+    public void run(String fileName) throws IOException {
         configureSparkContext();
         List<Person> persons = ReaderService.readPersons("src/main/resources/common/input/persons.json");
         JavaRDD<Person> personsRdd = sparkContext.parallelize(persons);
         personsRdd.persist(StorageLevel.MEMORY_AND_DISK());
+        CassandraWriterService.percistToCassandra(personsRdd);
+        ElasticSearchWriterService.percistToElasticSearch(personsRdd);
 
     }
+
 
     private void configureSparkContext() {
         SparkConf sparkConf = new SparkConf();
