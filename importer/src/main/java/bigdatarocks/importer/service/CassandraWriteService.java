@@ -8,7 +8,7 @@ import static bigdatarocks.common.constants.Constants.CASS_KEYSPACE;
 import static bigdatarocks.common.constants.Constants.CASS_TABLE;
 import static com.datastax.spark.connector.japi.CassandraJavaUtil.mapToRow;
 
-public class CassandraWriterService {
+public class CassandraWriteService {
 
     public static void percistToCassandra(JavaRDD<Person> personsRdd) {
         CassandraJavaUtil.javaFunctions(personsRdd).writerBuilder(CASS_KEYSPACE, CASS_TABLE,

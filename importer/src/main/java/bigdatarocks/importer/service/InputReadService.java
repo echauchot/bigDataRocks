@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReaderService {
+public class InputReadService {
 
     public static List<Person> readPersons(String fileName) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
