@@ -17,10 +17,6 @@
         "enabled": false
       },
       "properties": {
-        "id": {
-          "index": "not_analyzed",
-          "type": "string"
-        },
         "name": {
           "type": "string",
           "index_options": "docs"

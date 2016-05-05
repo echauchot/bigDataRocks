@@ -12,8 +12,8 @@ with replication = {'class': 'SimpleStrategy', 'replication_factor' : 1}
 use bigdatarocks;
 
 create table if not exists top_report (
-    id uuid,
-    name text,
+    user_name text,
     age int,
-    children_count int
+    children_count int,
+    primary key ((user_name))
 ) ;
