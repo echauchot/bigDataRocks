@@ -1,61 +1,61 @@
 [
   {
-    "name": "Etienne",
+    "userName": "Etienne",
     "age": 32,
     "childrenCount": 1
   },
   {
-    "name": "Amelie",
+    "userName": "Amelie",
     "age": 32,
     "childrenCount": 1
   },
   {
-    "name": "Hélène",
+    "userName": "Hélène",
     "age": 30,
     "childrenCount": 1
   },
   {
-    "name": "Louis",
+    "userName": "Louis",
     "age": 3,
     "childrenCount": 0
   },
   {
-    "name": "Marie",
+    "userName": "Marie",
     "age": 60,
     "childrenCount": 2
   },
   {
-    "name": "Emmanuel",
+    "userName": "Emmanuel",
     "age": 29,
     "childrenCount": 0
   },
   {
-    "name": "Jean",
+    "userName": "Jean",
     "age": 70,
     "childrenCount": 3
   },
   {
-    "name": "Louise",
+    "userName": "Louise",
     "age": 25,
     "childrenCount": 0
   },
   {
-    "name": "Thomas",
+    "userName": "Thomas",
     "age": 20,
     "childrenCount": 0
   },
   {
-    "name": "Roger",
+    "userName": "Roger",
     "age": 80,
     "childrenCount": 0
   },
   {
-    "name": "Laurent",
+    "userName": "Laurent",
     "age": 59,
     "childrenCount": 2
   },
   {
-    "name": "Jacqueline",
+    "userName": "Jacqueline",
     "age": 80,
     "childrenCount": 3
   }

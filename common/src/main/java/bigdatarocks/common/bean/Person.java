@@ -1,32 +1,18 @@
 package bigdatarocks.common.bean;
 
-import java.util.UUID;
-
 public class Person {
 
-    private String name;
+    private String userName;
     private int age;
     private int childrenCount;
-    private UUID id;
 
-    public Person() {
-        id = UUID.randomUUID();
+
+    public String getUserName() {
+        return userName;
     }
 
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public int getAge() {
