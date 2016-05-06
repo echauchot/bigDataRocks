@@ -14,9 +14,8 @@ public class InputReadServiceTest {
 @Test
   public void readPersons() throws IOException{
     List<Person> persons = InputReadService.readPersons("src/main/resources/input/persons.json");
-    assertNotNull(persons.get(0).getId());
     assertEquals(12, persons.size());
-    assertEquals("Etienne", persons.get(0).getName());
+    assertEquals("Etienne", persons.get(0).getUserName());
     assertEquals(32, persons.get(0).getAge());
     assertEquals(1, persons.get(0).getChildrenCount());
 
