@@ -1,14 +1,25 @@
 package bigdatarocks.common.dao;
 
 import bigdatarocks.common.bean.Person;
+import bigdatarocks.common.constants.Constants;
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Statement;
+import com.datastax.driver.core.Token;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
 
 import java.io.Serializable;
 import java.util.UUID;
+
+import static bigdatarocks.common.constants.Constants.CASS_KEYSPACE;
+import static bigdatarocks.common.constants.Constants.CASS_TABLE;
 
 /**
  * Created by ashe on 06/05/16.
  */
 public class PersonDao extends ACassandraDao<Person> implements Serializable {
+
+    private static final long serialVersionUID = 3208095924979326170L;
+
     public PersonDao(String nodes, String port, String keyspace) {
         super(nodes, port, keyspace);
     }
@@ -25,6 +36,15 @@ public class PersonDao extends ACassandraDao<Person> implements Serializable {
     }
     public void delete(String userName) {
         mapper.delete(userName);
+    }
+
+    //warning, just for testing as count(*) in Cassandra does a cluster scan
+    public long count(){
+        Statement statement = QueryBuilder.select().countAll().from(CASS_KEYSPACE, CASS_TABLE);
+        ResultSet results = session.execute(statement);
+        long count = results.one().getLong(0);
+        return count;
+
     }
 
 }

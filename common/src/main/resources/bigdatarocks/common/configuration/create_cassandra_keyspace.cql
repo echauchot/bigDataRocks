@@ -1,5 +1,5 @@
 // For 3 servers infrastructure with 1 datacenter :
-//    with replication = {'class': 'NetworkTopologyStrategy', 'datacenter1': '3'}
+//    with replication = {'class': 'NetworkTopologyStrategy', 'datacenter1': '2'}
 // For single server :
 //    with replication = {'class': 'SimpleStrategy', 'replication_factor' : 1}
 
@@ -11,7 +11,7 @@ with replication = {'class': 'SimpleStrategy', 'replication_factor' : 1}
 
 use bigdatarocks;
 
-create table if not exists top_report (
+create table if not exists persons (
     user_name text,
     age int,
     children_count int,

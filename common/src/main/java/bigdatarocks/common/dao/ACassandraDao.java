@@ -16,7 +16,7 @@ public abstract class ACassandraDao<T> {
     private String port;
     private String keyspace;
     private Cluster cluster;
-    private Session session;
+    protected Session session;
     protected Mapper<T> mapper;
 
     public ACassandraDao(String nodes, String port, String keyspace) {
