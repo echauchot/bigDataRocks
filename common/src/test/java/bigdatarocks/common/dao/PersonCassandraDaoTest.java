@@ -3,7 +3,6 @@ package bigdatarocks.common.dao;
 import bigdatarocks.common.bean.Person;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
-import com.datastax.driver.mapping.MappingManager;
 import org.cassandraunit.CQLDataLoader;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.AfterClass;
@@ -17,10 +16,7 @@ import static bigdatarocks.common.constants.Constants.CASS_KEYSPACE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-/**
- * Created by ashe on 06/05/16.
- */
-public class PersonDaoTest {
+public class PersonCassandraDaoTest {
     private static Session session;
     private static Cluster cluster;
 
@@ -45,21 +41,21 @@ public class PersonDaoTest {
     @Test
     public void crud(){
         Person personToInsert = new Person("Albert", 10, 0);
-        PersonDao personDao = new PersonDao("localhost", "9142", CASS_KEYSPACE);
-        personDao.init(Person.class);
-        personDao.create(personToInsert);
-        long count = personDao.count();
+        PersonCassandraDao personCassandraDao = new PersonCassandraDao("localhost", "9142", CASS_KEYSPACE);
+        personCassandraDao.init(Person.class);
+        personCassandraDao.create(personToInsert);
+        long count = personCassandraDao.count();
         assertEquals("wrong number of persons in database", 1L, count);
-        Person person = personDao.read("Albert");
+        Person person = personCassandraDao.read("Albert");
         assertEquals("wrong userName", "Albert", person.getUserName());
         assertEquals("wrong age", 10, person.getAge());
         assertEquals("wrong CildrenCont", 0, person.getChildrenCount());
         personToInsert.setAge(11);
-        personDao.update(personToInsert);
-        person = personDao.read("Albert");
+        personCassandraDao.update(personToInsert);
+        person = personCassandraDao.read("Albert");
         assertEquals("wrong age", 11, person.getAge());
-        personDao.delete("Albert");
-        person = personDao.read("Albert");
+        personCassandraDao.delete("Albert");
+        person = personCassandraDao.read("Albert");
         assertNull("Albert should have been deleted", person);
 
     }

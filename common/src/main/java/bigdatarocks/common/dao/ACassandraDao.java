@@ -6,9 +6,6 @@ import com.datastax.driver.mapping.Mapper;
 import com.datastax.driver.mapping.MappingManager;
 import org.apache.log4j.Logger;
 
-/**
- * Created by ashe on 06/05/16.
- */
 public abstract class ACassandraDao<T> {
     private static final Logger LOGGER = Logger.getLogger(ACassandraDao.class);
 
@@ -31,7 +28,7 @@ public abstract class ACassandraDao<T> {
             final String[] nodesList = nodes.split(",");
             for (String node : nodesList) {
                 builder.addContactPoint(node).withPort(Integer.parseInt(port));
-                LOGGER.info(String.format("Cassandra adding node: %s", node));
+                LOGGER.info(String.format("Added cassandra node : %s", node + ":" + port));
             }
             cluster = builder.build();
             session = null;
@@ -56,7 +53,7 @@ public abstract class ACassandraDao<T> {
             try {
                 this.cluster.close();
             } catch (Exception e) {
-                LOGGER.error("Erro closing CassandraDao");
+                LOGGER.error("Error closing CassandraDao");
                 throw e;
             }
         }

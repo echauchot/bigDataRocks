@@ -13,14 +13,11 @@ import java.util.UUID;
 import static bigdatarocks.common.constants.Constants.CASS_KEYSPACE;
 import static bigdatarocks.common.constants.Constants.CASS_TABLE;
 
-/**
- * Created by ashe on 06/05/16.
- */
-public class PersonDao extends ACassandraDao<Person> implements Serializable {
+public class PersonCassandraDao extends ACassandraDao<Person> implements Serializable {
 
     private static final long serialVersionUID = 3208095924979326170L;
 
-    public PersonDao(String nodes, String port, String keyspace) {
+    public PersonCassandraDao(String nodes, String port, String keyspace) {
         super(nodes, port, keyspace);
     }
 
