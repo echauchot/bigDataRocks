@@ -1,13 +1,10 @@
 package service;
 
-import bigdatarocks.common.bean.Person;
-import bigdatarocks.common.dao.PersonDao;
 import bigdatarocks.importer.pipeline.WritePipeline;
 import org.junit.Test;
 
 import java.io.IOException;
 
-import static bigdatarocks.common.constants.Constants.CASS_KEYSPACE;
 import static org.junit.Assert.assertEquals;
 
 public class ElasticSearchWriteIT {
