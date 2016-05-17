@@ -3,6 +3,7 @@ package bigdatarocks.common.dao;
 import bigdatarocks.common.bean.Person;
 import bigdatarocks.common.tools.EmbeddedElasticSearchServerHelper;
 import org.apache.commons.io.IOUtils;
+import org.elasticsearch.client.Client;
 import org.elasticsearch.client.IndicesAdminClient;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
@@ -22,12 +23,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 public class PersonElasticsearchDaoTest {
+    private static Client client;
     @BeforeClass
     public static void startEmbeddedElasticsearch()
             throws IOException, ConfigurationException, InterruptedException {
 
         try {
             EmbeddedElasticSearchServerHelper.startEmbeddedElasticsearch();
+            client = EmbeddedElasticSearchServerHelper.getClient();
             createIndexTemplate();
 
 
@@ -37,13 +40,6 @@ public class PersonElasticsearchDaoTest {
 
     }
     private static void createIndexTemplate() throws IOException {
-        Settings settings =
-                Settings.builder().put("cluster.name", "elasticsearch").put("network.server", false).put("node.client",
-                                                                                                     true).build();
-        TransportClient client = TransportClient.builder().settings(settings).build();
-            client.addTransportAddress(
-                    new InetSocketTransportAddress(new InetSocketAddress("localhost", 9300)));
-
         final IndicesAdminClient indices = client.admin().indices();
         indices.preparePutTemplate("persons").setSource(IOUtils.toByteArray(new FileInputStream(new File(
                 "src/main/resources/bigdatarocks/common/configuration/create_elasticsearch_persons_index_template.json")))).execute().actionGet();
@@ -52,7 +48,8 @@ public class PersonElasticsearchDaoTest {
     @Test
     public void crud() throws Exception{
         Person personToInsert = new Person("Albert", 10, 0);
-        PersonElasticsearchDao personElasticsearchDao = new PersonElasticsearchDao("localhost", "9300", "elastcisearch");
+        PersonElasticsearchDao personElasticsearchDao = new PersonElasticsearchDao(null, null, null);
+        personElasticsearchDao.setClient(client);
         personElasticsearchDao.init(Person.class);
         personElasticsearchDao.index(personToInsert);
         long count = personElasticsearchDao.count();
@@ -74,7 +71,7 @@ public class PersonElasticsearchDaoTest {
     }
 
     @AfterClass
-    public static void stopCassandra() {
+    public static void stopElasticsearch() {
         EmbeddedElasticSearchServerHelper.cleanEmbeddedElasticsearch();
         EmbeddedElasticSearchServerHelper.stopEmbeddedElasticsearch();
     }

@@ -28,17 +28,18 @@ public abstract class AElasticsearchDao<T> {
     public void init(Class<T> tClass) {
         try {
             objectMapper = new ObjectMapper();
-            Settings settings =
-                    Settings.builder().put("cluster.name", clusterName).put("network.server", false).put("node.client",
-                                                                                                         true).build();
-            TransportClient transClient = TransportClient.builder().settings(settings).build();
-            String[] nodeList = nodes.split(",");
-            for (String node : nodeList) {
-                transClient.addTransportAddress(
-                        new InetSocketTransportAddress(new InetSocketAddress(node, Integer.parseInt(port))));
-                LOGGER.info("Added Elasticsearch node : " + node + ":" + port);
+            if (client == null) {
+                Settings settings =
+                        Settings.builder().put("cluster.name", clusterName).build();
+                TransportClient transClient = TransportClient.builder().settings(settings).build();
+                String[] nodeList = nodes.split(",");
+                for (String node : nodeList) {
+                    transClient.addTransportAddress(
+                            new InetSocketTransportAddress(new InetSocketAddress(node, Integer.parseInt(port))));
+                    LOGGER.info("Added Elasticsearch node : " + node + ":" + port);
+                }
+                client = transClient;
             }
-            client = transClient;
 
         } catch (Exception e) {
             LOGGER.error("Error initializing ElasticsearchDao");
@@ -57,4 +58,7 @@ public abstract class AElasticsearchDao<T> {
         }
     }
 
+    public void setClient(Client client) {
+        this.client = client;
+    }
 }

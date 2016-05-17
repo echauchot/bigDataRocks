@@ -25,7 +25,7 @@ public class EmbeddedElasticSearchServerHelper {
         node = nodeBuilder().local(true).settings(elasticsearchSettings.build()).node();
     }
 
-    public Client getClient() {
+    public static Client getClient() {
         return node.client();
     }
 
