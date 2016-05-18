@@ -38,11 +38,11 @@ public class WritePipeline {
         sparkConf.setMaster("local[*]");
         sparkConf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer");
 
-        sparkConf.set("spark.cassandra.connection.host", "localhost");
+        sparkConf.set("spark.cassandra.connection.host", "172.17.0.2");
         sparkConf.set("spark.cassandra.output.batch.size.bytes", "64192");
         sparkConf.set("spark.cassandra.connection.port", "9042");
 
-        sparkConf.set("es.nodes", "localhost:9200");
+        sparkConf.set("es.nodes", "172.17.0.3:9200");
         sparkConf.set("es.batch.size.entries", "1000");
         sparkConf.set("es.batch.size.bytes", "2M");
         sparkConf.set("es.nodes.discovery", "true");
