@@ -22,11 +22,11 @@
           "index_options": "docs"
         },
         "age": {
-          "type": "int",
+          "type": "integer",
           "index_options": "docs"
         },
         "childrenCount": {
-          "type": "int",
+          "type": "integer",
           "index_options": "docs"
         }
       }
