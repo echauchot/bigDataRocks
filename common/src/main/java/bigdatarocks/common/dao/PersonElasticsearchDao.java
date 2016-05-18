@@ -34,9 +34,9 @@ public class PersonElasticsearchDao extends AElasticsearchDao<Person> implements
 
     public void index(Person person) throws Exception {
         try {
-            String personJson = objectMapper.writeValueAsString(person);
+            byte[] personBytes = objectMapper.writeValueAsBytes(person);
             IndexResponse response =
-                    client.prepareIndex(ES_INDEX, ES_DOCTYPE, person.getUserName()).setSource(personJson).get();
+                    client.prepareIndex(ES_INDEX, ES_DOCTYPE, person.getUserName()).setSource(personBytes).get();
         } catch (JsonProcessingException e) {
             LOGGER.error("Error while serializing Person object");
             throw e;

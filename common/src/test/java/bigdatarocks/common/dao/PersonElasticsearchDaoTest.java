@@ -5,9 +5,6 @@ import bigdatarocks.common.tools.EmbeddedElasticSearchServerHelper;
 import org.apache.commons.io.IOUtils;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.IndicesAdminClient;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -16,7 +13,6 @@ import javax.naming.ConfigurationException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
