@@ -44,11 +44,13 @@ public class PersonElasticsearchDao extends AElasticsearchDao<Person> implements
 
     }
 
-    public Person read(String userName) throws  IOException{
+    public Person read(String userName) throws IOException {
         GetResponse response = client.prepareGet(ES_INDEX, ES_DOCTYPE, userName).get();
         String personJson = response.getSourceAsString();
         try {
-            Person person = objectMapper.readValue(personJson, Person.class);
+            Person person = null;
+            if (personJson != null)
+                person = objectMapper.readValue(personJson, Person.class);
             return person;
         } catch (IOException e) {
             LOGGER.error("Error while deserializing Person document from elasticsearch");
@@ -106,14 +108,13 @@ public class PersonElasticsearchDao extends AElasticsearchDao<Person> implements
         DeleteResponse response = client.prepareDelete(ES_INDEX, ES_DOCTYPE, userName).get();
     }
 
-
     public long count() {
         long result = 0;
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ES_INDEX).setTypes(ES_DOCTYPE).setSize(0);
         SearchResponse response = searchRequestBuilder.execute().actionGet();
-        if (response != null){
+        if (response != null) {
         }
-    return result;
+        return result;
     }
 
 }
