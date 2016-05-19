@@ -32,7 +32,7 @@ public class PersonElasticsearchDao extends AElasticsearchDao<Person> implements
         super(nodes, port, clusterName);
     }
 
-    public void index(Person person) throws Exception {
+    public void create(Person person) throws Exception {
         try {
             byte[] personBytes = objectMapper.writeValueAsBytes(person);
             IndexResponse response =
@@ -113,6 +113,7 @@ public class PersonElasticsearchDao extends AElasticsearchDao<Person> implements
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ES_INDEX).setTypes(ES_DOCTYPE).setSize(0);
         SearchResponse response = searchRequestBuilder.execute().actionGet();
         if (response != null) {
+            result = response.getHits().totalHits();
         }
         return result;
     }
