@@ -47,11 +47,14 @@ public class PersonElasticsearchDaoTest {
         PersonElasticsearchDao personElasticsearchDao = new PersonElasticsearchDao(null, null, null);
         personElasticsearchDao.setClient(client);
         personElasticsearchDao.init(Person.class);
-        personElasticsearchDao.index(personToInsert);
+        personElasticsearchDao.create(personToInsert);
+        //leave elasticsearch a bit of time for indexing new data.
+        Thread.sleep(1000);
         long count = personElasticsearchDao.count();
         assertEquals("wrong number of persons in elasticsearch", 1L, count);
+
         List<Person> persons = personElasticsearchDao.searchByUserName("Albert");
-        assertEquals("wrong number of persons called Albert", 0, persons.size());
+        assertEquals("wrong number of persons called Albert", 1, persons.size());
         Person person = persons.get(0);
         assertEquals("wrong userName", "Albert", person.getUserName());
         assertEquals("wrong age", 10, person.getAge());
