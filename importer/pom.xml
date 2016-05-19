@@ -34,6 +34,10 @@
             <artifactId>spark-core_2.10</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.module</groupId>
+            <artifactId>jackson-module-scala_2.10</artifactId>
+        </dependency>
 
         <!--ElasticSearch deps-->
         <dependency>
