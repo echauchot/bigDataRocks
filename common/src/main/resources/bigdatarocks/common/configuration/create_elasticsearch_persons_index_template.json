@@ -17,7 +17,7 @@
         "enabled": false
       },
       "properties": {
-        "name": {
+        "userName": {
           "type": "string",
           "index_options": "docs"
         },
