@@ -18,8 +18,7 @@ public class WritePipeline {
 
     public void run(String fileName, boolean percistToCassandra, boolean percistToElasticSearch) throws IOException {
         configureSparkContext();
-        //TODO parametrize input
-        List<Person> persons = InputReadService.readPersons("src/main/resources/common/input/persons.json");
+        List<Person> persons = InputReadService.readPersons(fileName);
         JavaRDD<Person> personsRdd = sparkContext.parallelize(persons);
         personsRdd.persist(StorageLevel.MEMORY_AND_DISK());
         if (percistToCassandra)
