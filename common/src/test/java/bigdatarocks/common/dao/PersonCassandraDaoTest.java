@@ -31,7 +31,7 @@ public class PersonCassandraDaoTest {
             session = cluster.connect();
 
             CQLDataLoader dataLoader = new CQLDataLoader(session);
-            dataLoader.load(new org.cassandraunit.dataset.cql.FileCQLDataSet("src/main/resources/bigdatarocks/common/configuration/create_cassandra_keyspace.cql"));
+            dataLoader.load(new org.cassandraunit.dataset.cql.FileCQLDataSet("src/main/resources/bigdatarocks/common/configuration/cassandra_keyspace.cql"));
         } catch (Exception e) {
             throw new RuntimeException("Could not start embeded cassandra server or obtain a valid session.", e);
         }

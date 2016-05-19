@@ -38,7 +38,7 @@ public class PersonElasticsearchDaoTest {
     private static void createIndexTemplate() throws IOException {
         final IndicesAdminClient indices = client.admin().indices();
         indices.preparePutTemplate("persons").setSource(IOUtils.toByteArray(new FileInputStream(new File(
-                "src/main/resources/bigdatarocks/common/configuration/create_elasticsearch_persons_index_template.json")))).execute().actionGet();
+                "src/main/resources/bigdatarocks/common/configuration/elasticsearch_persons_index_template.json")))).execute().actionGet();
     }
 
     @Test
