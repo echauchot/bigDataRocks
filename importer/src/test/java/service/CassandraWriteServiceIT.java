@@ -21,7 +21,7 @@ public class CassandraWriteServiceIT {
     @BeforeClass
     public static void initTest() {
         pipeline = new WritePipeline();
-        personCassandraDao = new PersonCassandraDao("localhost", "9042", CASS_KEYSPACE);
+        personCassandraDao = new PersonCassandraDao("172.17.0.2", "9042", CASS_KEYSPACE);
         personCassandraDao.init(Person.class);
     }
 
@@ -33,7 +33,6 @@ public class CassandraWriteServiceIT {
         Person etienne = personCassandraDao.read("Etienne");
         assertEquals("wrong age for Etienne", 32, etienne.getAge());
         assertEquals("wrong childrenCount for Etienne", 1, etienne.getChildrenCount());
-
     }
 
     @AfterClass
