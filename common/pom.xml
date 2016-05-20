@@ -34,6 +34,11 @@
             <artifactId>elasticsearch</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+
         <!--Utils dependencies-->
         <dependency>
             <groupId>log4j</groupId>

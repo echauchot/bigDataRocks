@@ -50,12 +50,12 @@
             <artifactId>elasticsearch-hadoop</artifactId>
         </dependency>
 
-        <!--Utils deps-->
-
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
         </dependency>
+
+        <!--Utils deps-->
 
         <dependency>
             <groupId>junit</groupId>
