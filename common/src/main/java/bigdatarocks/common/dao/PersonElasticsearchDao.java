@@ -11,6 +11,7 @@ import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.client.IndicesAdminClient;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -45,17 +46,19 @@ public class PersonElasticsearchDao extends AElasticsearchDao<Person> implements
     }
 
     public Person read(String userName) throws IOException {
+        Person person = null;
         GetResponse response = client.prepareGet(ES_INDEX, ES_DOCTYPE, userName).get();
-        String personJson = response.getSourceAsString();
-        try {
-            Person person = null;
-            if (personJson != null)
-                person = objectMapper.readValue(personJson, Person.class);
-            return person;
-        } catch (IOException e) {
-            LOGGER.error("Error while deserializing Person document from elasticsearch");
-            throw e;
+        if (response != null) {
+            String personJson = response.getSourceAsString();
+            try {
+                if (personJson != null)
+                    person = objectMapper.readValue(personJson, Person.class);
+            } catch (IOException e) {
+                LOGGER.error("Error while deserializing Person document from elasticsearch");
+                throw e;
+            }
         }
+        return person;
     }
 
     public List<Person> searchByUserName(String userName) throws Exception {
@@ -118,4 +121,8 @@ public class PersonElasticsearchDao extends AElasticsearchDao<Person> implements
         return result;
     }
 
+    public void deleteAll() {
+        final IndicesAdminClient indices = client.admin().indices();
+        indices.prepareDelete(ES_INDEX).execute().actionGet();
+    }
 }

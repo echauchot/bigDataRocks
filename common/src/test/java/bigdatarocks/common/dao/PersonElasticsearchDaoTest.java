@@ -5,6 +5,7 @@ import bigdatarocks.common.tools.EmbeddedElasticSearchServerHelper;
 import org.apache.commons.io.IOUtils;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.IndicesAdminClient;
+import org.elasticsearch.index.IndexNotFoundException;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,22 +20,21 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 public class PersonElasticsearchDaoTest {
+
     private static Client client;
+    private static PersonElasticsearchDao personElasticsearchDao;
+
     @BeforeClass
-    public static void startEmbeddedElasticsearch()
-            throws IOException, ConfigurationException, InterruptedException {
-
-        try {
-            EmbeddedElasticSearchServerHelper.startEmbeddedElasticsearch();
-            client = EmbeddedElasticSearchServerHelper.getClient();
-            createIndexTemplate();
-
-
-        } catch (Exception e) {
-            throw new RuntimeException("Could not start embeded elasticsearch server or obtain a valid session.", e);
-        }
+    public static void initTest() throws Exception{
+        EmbeddedElasticSearchServerHelper.startEmbeddedElasticsearch();
+        client = EmbeddedElasticSearchServerHelper.getClient();
+        createIndexTemplate();
+        personElasticsearchDao = new PersonElasticsearchDao(null, null, null);
+        personElasticsearchDao.setClient(client);
+        personElasticsearchDao.init(Person.class);
 
     }
+
     private static void createIndexTemplate() throws IOException {
         final IndicesAdminClient indices = client.admin().indices();
         indices.preparePutTemplate("persons").setSource(IOUtils.toByteArray(new FileInputStream(new File(
@@ -44,9 +44,6 @@ public class PersonElasticsearchDaoTest {
     @Test
     public void crud() throws Exception{
         Person personToInsert = new Person("Albert", 10, 0);
-        PersonElasticsearchDao personElasticsearchDao = new PersonElasticsearchDao(null, null, null);
-        personElasticsearchDao.setClient(client);
-        personElasticsearchDao.init(Person.class);
         personElasticsearchDao.create(personToInsert);
         //leave elasticsearch a bit of time for indexing new data.
         Thread.sleep(1000);
@@ -66,6 +63,12 @@ public class PersonElasticsearchDaoTest {
         personElasticsearchDao.delete("Albert");
         person = personElasticsearchDao.read("Albert");
         assertNull("Albert should have been deleted", person);
+
+    }
+    @Test(expected=IndexNotFoundException.class)
+    public void testIndexDelete() throws IOException{
+        personElasticsearchDao.deleteAll();
+        personElasticsearchDao.read("Anyone");
 
     }
 
