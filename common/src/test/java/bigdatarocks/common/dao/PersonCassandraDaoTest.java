@@ -13,36 +13,36 @@ import javax.naming.ConfigurationException;
 import java.io.IOException;
 
 import static bigdatarocks.common.constants.Constants.CASS_KEYSPACE;
+import static bigdatarocks.common.constants.Constants.CASS_TABLE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 public class PersonCassandraDaoTest {
+
     private static Session session;
     private static Cluster cluster;
+    private static PersonCassandraDao personCassandraDao;
 
     @BeforeClass
-    public static void startEmbeddedCassandra()
-            throws IOException, ConfigurationException, InterruptedException {
+    public static void initTest() throws Exception {
 
-        try {
+        EmbeddedCassandraServerHelper.startEmbeddedCassandra(30000L);
+        cluster = new Cluster.Builder().addContactPoint("localhost").withPort(9142).build();
+        session = cluster.connect();
+        createKeyspace();
+        personCassandraDao = new PersonCassandraDao("localhost", "9142", CASS_KEYSPACE);
+        personCassandraDao.init(Person.class);
+    }
 
-            EmbeddedCassandraServerHelper.startEmbeddedCassandra(30000L);
-            cluster = new Cluster.Builder().addContactPoint("localhost").withPort(9142).build();
-            session = cluster.connect();
-
-            CQLDataLoader dataLoader = new CQLDataLoader(session);
-            dataLoader.load(new org.cassandraunit.dataset.cql.FileCQLDataSet("src/main/resources/bigdatarocks/common/configuration/cassandra_keyspace.cql"));
-        } catch (Exception e) {
-            throw new RuntimeException("Could not start embeded cassandra server or obtain a valid session.", e);
-        }
-
+    private static void createKeyspace() {
+        CQLDataLoader dataLoader = new CQLDataLoader(session);
+        dataLoader.load(new org.cassandraunit.dataset.cql.FileCQLDataSet(
+                "src/main/resources/bigdatarocks/common/configuration/cassandra_keyspace.cql"));
     }
 
     @Test
-    public void crud(){
+    public void crud() {
         Person personToInsert = new Person("Albert", 10, 0);
-        PersonCassandraDao personCassandraDao = new PersonCassandraDao("localhost", "9142", CASS_KEYSPACE);
-        personCassandraDao.init(Person.class);
         personCassandraDao.create(personToInsert);
         long count = personCassandraDao.count();
         assertEquals("wrong number of persons in database", 1L, count);
@@ -57,7 +57,13 @@ public class PersonCassandraDaoTest {
         personCassandraDao.delete("Albert");
         person = personCassandraDao.read("Albert");
         assertNull("Albert should have been deleted", person);
+    }
 
+    @Test
+    public void testTruncateTable(){
+        personCassandraDao.deleteAll();
+        long count = personCassandraDao.count();
+        assertEquals("table " + CASS_TABLE + " should be empty", 0, count);
     }
 
     @AfterClass
