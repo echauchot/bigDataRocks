@@ -2,6 +2,7 @@ package service;
 
 import bigdatarocks.common.bean.Person;
 import bigdatarocks.common.dao.PersonCassandraDao;
+import bigdatarocks.common.tools.ConfigLoader;
 import bigdatarocks.importer.pipeline.WritePipeline;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -9,6 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Properties;
 
 import static bigdatarocks.common.constants.Constants.CASS_KEYSPACE;
 import static org.junit.Assert.assertEquals;
@@ -19,9 +21,11 @@ public class CassandraWriteServiceIT {
     private static PersonCassandraDao personCassandraDao;
 
     @BeforeClass
-    public static void initTest() {
-        pipeline = new WritePipeline();
-        personCassandraDao = new PersonCassandraDao("172.17.0.2", "9042", CASS_KEYSPACE);
+    public static void initTest() throws Exception{
+        Properties properties = ConfigLoader.loadProperties();
+        pipeline = new WritePipeline(properties);
+        personCassandraDao = new PersonCassandraDao(properties.getProperty("cassandra.nodes"),
+                                                    properties.getProperty("cassandra.port"), CASS_KEYSPACE);
         personCassandraDao.init(Person.class);
     }
 

@@ -11,13 +11,17 @@ import org.apache.spark.storage.StorageLevel;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
 
 public class WritePipeline {
 
     private JavaSparkContext sparkContext;
 
+    public WritePipeline(Properties properties) {
+        configureSparkContext(properties);
+    }
+
     public void run(String fileName, boolean percistToCassandra, boolean percistToElasticSearch) throws IOException {
-        configureSparkContext();
         List<Person> persons = InputReadService.readPersons(fileName);
         JavaRDD<Person> personsRdd = sparkContext.parallelize(persons);
         personsRdd.persist(StorageLevel.MEMORY_AND_DISK());
@@ -28,23 +32,22 @@ public class WritePipeline {
 
     }
 
-    private void configureSparkContext() {
+    private void configureSparkContext(Properties properties) {
         SparkConf sparkConf = new SparkConf();
         sparkConf.setAppName("Write pipeline");
         sparkConf.set("spark.driver.allowMultipleContexts", "true");
 
-        //TODO parameters in config file
-        sparkConf.setMaster("local[*]");
+        sparkConf.setMaster(properties.getProperty("spark.master"));
         sparkConf.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer");
 
-        sparkConf.set("spark.cassandra.connection.host", "172.17.0.2");
-        sparkConf.set("spark.cassandra.output.batch.size.bytes", "64192");
-        sparkConf.set("spark.cassandra.connection.port", "9042");
+        sparkConf.set("spark.cassandra.connection.host", properties.getProperty("cassandra.nodes"));
+        sparkConf.set("spark.cassandra.output.batch.size.bytes", properties.getProperty("cassandra.batch.size.bytes"));
+        sparkConf.set("spark.cassandra.connection.port", properties.getProperty("cassandra.port"));
 
-        sparkConf.set("es.nodes", "172.17.0.3:9200");
-        sparkConf.set("es.batch.size.entries", "1000");
-        sparkConf.set("es.batch.size.bytes", "2M");
-        sparkConf.set("es.nodes.discovery", "true");
+        sparkConf.set("es.nodes", properties.getProperty("elasticsearch.nodes") + ":" + properties.getProperty("elasticsearch.port.rest"));
+        sparkConf.set("es.batch.size.entries", properties.getProperty("elasticsearch.batch.size.entries"));
+        sparkConf.set("es.batch.size.bytes", properties.getProperty("elasticsearch.batch.size.bytes"));
+        sparkConf.set("es.nodes.discovery", properties.getProperty("elasticsearch.nodes.dicovery"));
 
         sparkContext = new JavaSparkContext(sparkConf);
     }

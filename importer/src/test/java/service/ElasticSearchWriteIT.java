@@ -2,12 +2,14 @@ package service;
 
 import bigdatarocks.common.bean.Person;
 import bigdatarocks.common.dao.PersonElasticsearchDao;
+import bigdatarocks.common.tools.ConfigLoader;
 import bigdatarocks.importer.pipeline.WritePipeline;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 
@@ -17,9 +19,12 @@ public class ElasticSearchWriteIT {
     private static PersonElasticsearchDao personElasticsearchDao;
 
     @BeforeClass
-    public static void initTest(){
-        pipeline = new WritePipeline();
-        personElasticsearchDao = new PersonElasticsearchDao("172.17.0.3", "9300", "elasticsearch");
+    public static void initTest() throws Exception {
+        Properties properties = ConfigLoader.loadProperties();
+        pipeline = new WritePipeline(properties);
+        personElasticsearchDao = new PersonElasticsearchDao(properties.getProperty("elasticsearch.nodes"),
+                                                            properties.getProperty("elasticsearch.port.transport"),
+                                                            properties.getProperty("elasticsearch.clustername"));
         personElasticsearchDao.init(Person.class);
     }
 
@@ -35,7 +40,7 @@ public class ElasticSearchWriteIT {
     }
 
     @AfterClass
-    public static void clean(){
+    public static void clean() {
         personElasticsearchDao.deleteAll();
     }
 }
