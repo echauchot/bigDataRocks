@@ -69,7 +69,6 @@ public class PersonCassandraDaoTest {
     @AfterClass
     public static void stopCassandra() {
         EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
-        EmbeddedCassandraServerHelper.stopEmbeddedCassandra();
     }
 
 }
