@@ -1,4 +1,4 @@
-# bigDataRocks !
+# Big data rocks !
 This repo contains examples to help people using big data technologies such as Spark, Cassandra and Elasticsearch.
 
 ## Content
