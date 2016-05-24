@@ -3,6 +3,7 @@ package bigdatarocks.common.dao;
 import bigdatarocks.common.bean.Person;
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.exceptions.OperationTimedOutException;
 import org.cassandraunit.CQLDataLoader;
 import org.cassandraunit.utils.EmbeddedCassandraServerHelper;
 import org.junit.AfterClass;
@@ -71,12 +72,14 @@ public class PersonCassandraDaoTest {
 
     @AfterClass
     public static void stopCassandra() {
+        //Sometimes cleaning request to EmbeddedCassandra timeouts but it is not a big deal not to clean embeddedCassandra
+        // because keyspace is dropped and recreated in the initialization of this test. It is better not to break the build
+        // on slow machines
         try {
-            Thread.sleep(2000L);
-        } catch (InterruptedException e) {
-            //it is just for temporization of embedded Cassandra, do not care for idle thread interruption
+            EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
+        } catch (OperationTimedOutException e) {
+            e.printStackTrace();
         }
-        EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
     }
 
 }
