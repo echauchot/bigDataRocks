@@ -26,7 +26,10 @@ public class PersonCassandraDaoTest {
     @BeforeClass
     public static void initTest() throws Exception {
 
-        EmbeddedCassandraServerHelper.startEmbeddedCassandra(30000L);
+        //this test will be slow because it needs to start Casssandra embedded server.
+        // For the test to be run on slow machines,
+        // the embedded cassandra start timeout is set bellow to 32s ! (which is pretty slow for a unit test)
+        EmbeddedCassandraServerHelper.startEmbeddedCassandra(32000L);
         cluster = new Cluster.Builder().addContactPoint("localhost").withPort(9142).build();
         session = cluster.connect();
         createKeyspace();
@@ -60,7 +63,7 @@ public class PersonCassandraDaoTest {
     }
 
     @Test
-    public void testTruncateTable(){
+    public void testTruncateTable() {
         personCassandraDao.deleteAll();
         long count = personCassandraDao.count();
         assertEquals("table " + CASS_TABLE + " should be empty", 0, count);
@@ -68,6 +71,11 @@ public class PersonCassandraDaoTest {
 
     @AfterClass
     public static void stopCassandra() {
+        try {
+            Thread.sleep(2000L);
+        } catch (InterruptedException e) {
+            //it is just for temporization of embedded Cassandra, do not care for idle thread interruption
+        }
         EmbeddedCassandraServerHelper.cleanEmbeddedCassandra();
     }
 
