@@ -13,7 +13,7 @@ The project is designed to work on a single machine. It contains no main and sho
 
 ## Requirements
  - java and maven (obviously :) )
- - docker (for backend containers)
+ - docker for backend containers (see https://github.com/etienne-chauchot/bigDataRocksCI)
 
 ## Next steps
  - Add more comprehensive Spark example with map/reduce operations and good practices (for instance, avoid groupby and prefer mapTopair + reduceByKey to avoid shuffle ...)
